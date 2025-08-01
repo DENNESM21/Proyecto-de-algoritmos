@@ -1,3 +1,5 @@
 Mela,12345678,melani@yopmail.com
 asdaasa,ass,12,sd,czx@yopamil.com,xzz11111222222
 stuart,Gato,15,Gato,stuar@yopmail.com,12345678
+Ninja,Ninja,21,Ninja,ninja@yopmail.com,12345678,Administrador
+jugador,jugador,12,jugador,jugador@yopmail.com,12345678,Jugador

@@ -9,10 +9,10 @@ class RegisterPanel:
     def __init__(self):
         self.ventana = tk.Tk()
         self.ventana.title("Registro - PoliNinjaGames")
-        self.ventana.geometry("800x500")
+        self.ventana.geometry("800x550")
         self.ventana.config(bg='#fcfcfc')
         self.ventana.resizable(False, False)
-        utl.centrar_ventana(self.ventana, 800, 500)
+        utl.centrar_ventana(self.ventana, 800, 550)
 
         # Imagen logo
         logo = utl.leer_imagen("./imagenes/logoninja.png", (200, 200))
@@ -20,6 +20,7 @@ class RegisterPanel:
         # Frame izquierdo con imagen
         frame_logo = tk.Frame(self.ventana, width=300, bg='#3a7ff6')
         frame_logo.pack(side="left", fill=tk.BOTH)
+        frame_logo.pack_propagate(False)  # <- IMPORTANTE
         if logo:
             label = tk.Label(frame_logo, image=logo, bg='#3a7ff6')
             label.image = logo
@@ -34,17 +35,26 @@ class RegisterPanel:
 
         # Campos del formulario
         self.campos = {}
-        self.labels = ["Nombres", "Apellidos", "Edad", "Nickname", "Correo Electrónico", "Contraseña"]
-        for label_text in self.labels:
+        labels = ["Nombres", "Apellidos", "Edad", "Nickname", "Correo Electrónico", "Contraseña"]
+        for label_text in labels:
             lbl = tk.Label(frame_form, text=label_text, font=('Arial', 12), bg='white', anchor="w")
             lbl.pack(fill='x', padx=20)
             entry = ttk.Entry(frame_form, font=('Arial', 12), show="*" if label_text == "Contraseña" else None)
             entry.pack(fill='x', padx=20, pady=5)
             self.campos[label_text] = entry
 
+        # Campo especial: ComboBox para Rol Usuario
+        lbl_rol = tk.Label(frame_form, text="Rol Usuario", font=('Arial', 12), bg='white', anchor="w")
+        lbl_rol.pack(fill='x', padx=20)
+        combo_rol = ttk.Combobox(frame_form, font=('Arial', 12), state="readonly")
+        combo_rol['values'] = ["Jugador", "Administrador"]
+        combo_rol.current(0)
+        combo_rol.pack(fill='x', padx=20, pady=5)
+        self.campos["Rol Usuario"] = combo_rol
+
         # Botón de registrar
         btn_registrar = ttk.Button(frame_form, text="Registrarse", command=self.validar_datos)
-        btn_registrar.pack(pady=20)
+        btn_registrar.pack(pady=15)
 
         self.ventana.mainloop()
 
@@ -83,7 +93,7 @@ class RegisterPanel:
                     messagebox.showerror("Error", "El correo electrónico ya está registrado.")
                     return
 
-        # Guardar todos los datos del usuario
+        # Guardar usuario
         with open("usuarios.txt", "a", encoding="utf-8") as archivo:
             fila = ",".join([
                 datos["Nombres"],
@@ -91,7 +101,8 @@ class RegisterPanel:
                 datos["Edad"],
                 datos["Nickname"],
                 datos["Correo Electrónico"],
-                datos["Contraseña"]
+                datos["Contraseña"],
+                datos["Rol Usuario"]
             ])
             archivo.write(fila + "\n")
 

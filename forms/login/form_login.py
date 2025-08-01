@@ -65,12 +65,17 @@ class LoginPanel:
         with open("usuarios.txt", "r", encoding="utf-8") as archivo:
             for linea in archivo:
                 datos = linea.strip().split(",")
-                if len(datos) == 6:
-                    nombres, apellidos, edad, nickname, correo, password = datos
+                if len(datos) == 7:
+                    nombre, _, _, nickname, _, password, rol = datos
                     if usuario == nickname and clave == password:
-                        messagebox.showinfo("Éxito", f"Bienvenido/a al mini mundo ninja, {nombres} 🥷")
+                        if rol.lower() == "administrador":
+                            messagebox.showinfo("Bienvenido", f"¡Bienvenido al Panel Administrativo, {nombre}! 🛠️")
+                        else:
+                            messagebox.showinfo("Bienvenido", f"¡Bienvenido al Mini Mundo Ninja, {nombre}! 🥷")
+                        
                         self.ventana.destroy()
                         MasterPanel()
-                        return
+                        return  # Solo salir del método si inicia sesión correctamente
 
+        # Si no se encontró ninguna coincidencia
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
